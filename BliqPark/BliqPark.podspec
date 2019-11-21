@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.author       = { "Julian Glaab" => "julian@aipark.io" }
 
   s.platform     = :ios, "12.0"
-  s.source       = { :git => "https://github.com/Bliq-Open-Source/BliqPark-iOS.git", :tag => "1.1.5" }
+  s.source       = { :git => "https://github.com/Bliq-Open-Source/BliqPark-iOS.git", :tag => "2.0.0" }
 
   s.source_files  = "BliqPark/*.swift", "BliqPark/**/*.swift"
 
