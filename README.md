@@ -41,7 +41,7 @@ To use the BliqPark SDK, import the package and initialize the BliqPark class.
 ```swift
 import BliqPark
 
-let bliq = Bliq(apiKey: <yourAPIKey>)
+let bliq = BliqPark(apiKey: <yourAPIKey>)
 ```
 
 ### Authorization
