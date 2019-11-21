@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
 
   s.description  = "Bliq Park offers detailed parking information in more than 500 cities across 15 countries. You can find further information and documentation on how to get started on https://www.aipark.io. "
 
-  s.homepage     = "https://github.com/Bliq-Open-Source/BliqPark-iOS.git"
+  s.homepage     = "https://github.com/Bliq-Open-Source/BliqPark-iOS"
 
   s.license      = { :type => "Creative Commons BY NC SA 4.0", :file => "LICENSE" }
   s.author       = { "Julian Glaab" => "julian@aipark.io" }
