@@ -1,10 +1,10 @@
 ![BliqPark](https://github.com/Bliq-Open-Source/BliqPark-iOS/blob/master/logo.png)
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
-[![CocoaPods Compatible](https://img.shields.io/badge/CocoaPod-1.1.3-brightgreen.svg)](https://cocoapods.org/pods/AIPARKSDK)
-[![Platform](https://img.shields.io/badge/Platform-iOS-brightgreen.svg)](https://github.com/AIPARK-Open-Source/AiparkiOSSDK)
+[![CocoaPods Compatible](https://img.shields.io/badge/CocoaPod-1.1.3-brightgreen.svg)](https://cocoapods.org/pods/BliqPark)
+[![Platform](https://img.shields.io/badge/Platform-iOS-brightgreen.svg)](https://github.com/Bliq-Open-Source/BliqPark-iOS)
 [![Twitter](https://img.shields.io/badge/Twitter-%40AIPARK10-blue.svg)](https://twitter.com/AIPARK10)
-[![License](https://img.shields.io/github/license/AIPARK-Open-Source/AiparkiOSSDK.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
+[![License](https://img.shields.io/github/license/Bliq-Open-Source/BliqPark-iOS.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 # Starting Guide
 
@@ -41,7 +41,7 @@ To use the BliqPark SDK, import the package and initialize the BliqPark class.
 ```swift
 import BliqPark
 
-let bliq = Bliq(apiKey: <yourAPIKey>)
+let bliq = BliqPark(apiKey: <yourAPIKey>)
 ```
 
 ### Authorization
@@ -59,13 +59,8 @@ You also need to allow location updates in Background Mode. Otherwise there will
 
 ### Request ParkingAreas
 To request parking areas, you need to specify a request object. This object contains the location or area that you wish to get parking areas from.
-#### Tiles
-Tiles are predefined map areas. To visualize these tiles, you can visit this website [Tiles](http://tools.geofabrik.de/map/#2/29.1466/31.9609&type=Geofabrik_Standard&grid=1). You can request tiles on the zoom levels 15 to 16. To convert a GPS coordinate with Latitude/Longitude into a tile, you can use a predefined method:
-```swift
-func getTileForCoordinates(latitude: Double, longitude: Double, zoom: Int) -> (x: Int, y: Int)
-```
 
-An example of a request to get parking areas is shown below. This returns a set of parking areas from the specified tiles.
+An example of a request to get parking areas is shown below. This returns a set of parking areas near a given point. You can also request information for Map Tiles, Polygons or a set of given parking areas. Learn more about the different ways to request information <a href="https://docs.aipark.io/articles/request-types/">here</a>.
 ```swift
 let bliq = BliqPark(apiKey: <yourAPIKey>)
 let point = CLLocationCoordinate2D(latitude: 52.26421778466458, longitude: 10.520997047424316)
