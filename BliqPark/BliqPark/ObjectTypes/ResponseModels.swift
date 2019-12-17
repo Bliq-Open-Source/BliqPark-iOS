@@ -90,6 +90,7 @@ public struct ParkingEntity: Codable {
     public let orientation : String?
     public let parkingTags: [String]
     public let streetName: String?
+    public let parkingEntityName: String?
 }
 
 public struct PriceInformation: Codable {

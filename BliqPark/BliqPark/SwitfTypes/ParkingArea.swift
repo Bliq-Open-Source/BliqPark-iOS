@@ -27,6 +27,7 @@ public class ParkingArea {
     public var openingHours : OpeningHours?
     public var occupancy: Occupancy?
     public var maxStay: [MaxStaySchedule]?
+    public var parkingEntityName: String?
     
     init?(raw: Feature) {
         self.id = raw.id
@@ -42,6 +43,7 @@ public class ParkingArea {
         self.parkingTags = raw.properties.parkingEntity?.parkingTags
         self.priceInformation = raw.properties.parkingEntity?.priceInformation
         self.streetName = raw.properties.parkingEntity?.streetName
+        self.parkingEntityName = raw.properties.parkingEntity?.parkingEntityName
         
         
         // -------------- EXTRACT SHAPE -----------------------
