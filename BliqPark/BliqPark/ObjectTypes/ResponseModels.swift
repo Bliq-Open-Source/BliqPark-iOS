@@ -119,6 +119,12 @@ public struct Occupancy: Codable {
     public var occupancyPredicted: OccupancyPredicted?
     public var state: String?
     public var timestampDescription: TimestampDescription
+    public var occupancyLive: OccupancyLive?
+}
+
+public struct OccupancyLive: Codable {
+    public let lastUpdated: TimestampDescription?
+    public let minimumOpenSpots: Int?
 }
 
 public struct OccupancyPredicted: Codable {
