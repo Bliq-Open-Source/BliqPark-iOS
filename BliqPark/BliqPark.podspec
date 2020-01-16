@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "BliqPark"
-  s.version      = "2.0.2"
+  s.version      = "2.0.3"
   s.summary      = "Framework to use the Bliq`s parking services to find a free parking spot."
   s.swift_version = '4.2'
 
@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.author       = { "Julian Glaab" => "julian@aipark.io" }
 
   s.platform     = :ios, "12.0"
-  s.source       = { :git => "https://github.com/Bliq-Open-Source/BliqPark-iOS.git", :tag => "2.0.2" }
+  s.source       = { :git => "https://github.com/Bliq-Open-Source/BliqPark-iOS.git", :tag => "2.0.3" }
 
   s.source_files  = "BliqPark/*.swift", "BliqPark/**/*.swift"
 

@@ -96,6 +96,7 @@ public struct ParkingEntity: Codable {
 public struct PriceInformation: Codable {
     public let schedules: [PriceSchedule]?
     public let calculatedPrice: Int?
+    public let stringRepresentation: String?
 }
 
 public struct PriceSchedule: Codable {
@@ -172,4 +173,6 @@ public struct ScheduleKey: Codable {
     public let description: String?
     public let priority: Int?
 }
+
+
 

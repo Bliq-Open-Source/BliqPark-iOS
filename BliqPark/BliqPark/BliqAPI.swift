@@ -95,6 +95,19 @@ public class BliqPark {
     
 }
 
+enum BliqError: Error {
+    case badRequest
+    case unauthorized
+    case wrongPlan
+    case noPermissionForEndpoint
+    case noDataFound
+    case requestedLocationUnsupported
+    case rateLimitExceeded
+    case internalServerError
+    case requestTypeUnsupported
+    case timeout
+    case unknown
+}
 
 
 class BliqAPI {
@@ -133,23 +146,23 @@ class BliqAPI {
             case .success:
                 
                 if response.response?.statusCode != 200 {
-                    print(response.value.debugDescription)
+                    completionHandler(nil,self.handleError(response: response))
                 }
-                
-                if let data = response.data {
-                    
-                    DispatchQueue(label: "", qos: .userInitiated).async {
-                        do {
-                            let out = try JSONDecoder().decode(AskParkingAssistantResponse.self, from: data)
-                            let parkingAssistance = unwrapParkingAssistantResponse(apiResponse: out)
-                            // handle result
-                            completionHandler(parkingAssistance,nil)
-                            
-                        }
-                        catch let jsonErr {
-                            print(jsonErr)
-                            print(response.debugDescription)
-                            completionHandler(nil, jsonErr)
+                else {
+                    if let data = response.data {
+                        
+                        DispatchQueue(label: "", qos: .userInitiated).async {
+                            do {
+                                let out = try JSONDecoder().decode(AskParkingAssistantResponse.self, from: data)
+                                let parkingAssistance = unwrapParkingAssistantResponse(apiResponse: out)
+                                // handle result
+                                completionHandler(parkingAssistance,nil)
+                                
+                            }
+                            catch let jsonErr {
+                                //print(response.debugDescription)
+                                completionHandler(nil, jsonErr)
+                            }
                         }
                     }
                 }
@@ -186,23 +199,22 @@ class BliqAPI {
             case .success:
                 
                 if response.response?.statusCode != 200 {
-                    print(response.value.debugDescription)
+                    completionHandler(nil,self.handleError(response: response))
                 }
-                
-                if let data = response.data {
-                    
-                    DispatchQueue(label: "", qos: .userInitiated).async {
-                        do {
-                            let out = try JSONDecoder().decode(OnStreetParkingOptionsResponse.self, from: data)
-                            let parkingAreas = unwrapOnStreetParkingAreaResponse(apiResponse: out)
-                            // handle result
-                            completionHandler(parkingAreas,nil)
-                            
-                        }
-                        catch let jsonErr {
-                            //print(response.debugDescription)
-                            print(jsonErr)
-                            completionHandler(nil, jsonErr)
+                else {
+                    if let data = response.data {
+                        DispatchQueue(label: "", qos: .userInitiated).async {
+                            do {
+                                let out = try JSONDecoder().decode(OnStreetParkingOptionsResponse.self, from: data)
+                                let parkingAreas = unwrapOnStreetParkingAreaResponse(apiResponse: out)
+                                // handle result
+                                completionHandler(parkingAreas,nil)
+                                
+                            }
+                            catch let jsonErr {
+                                //print(response.debugDescription)
+                                completionHandler(nil, jsonErr)
+                            }
                         }
                     }
                 }
@@ -238,25 +250,24 @@ class BliqAPI {
             response in
             switch response.result {
             case .success:
-                
                 if response.response?.statusCode != 200 {
-                    print(response.value.debugDescription)
+                    completionHandler(nil,self.handleError(response: response))
                 }
-                
-                if let data = response.data {
-                    
-                    DispatchQueue(label: "", qos: .userInitiated).async {
-                        do {
-                            let out = try JSONDecoder().decode(OffStreetParkingOptionsResponse.self, from: data)
-                            let parkingAreas = unwrapOffStreetParkingAreaResponse(apiResponse: out)
-                            // handle result
-                            completionHandler(parkingAreas,nil)
-                            
-                        }
-                        catch let jsonErr {
-                            print(jsonErr)
-                            print(response.debugDescription)
-                            completionHandler(nil, jsonErr)
+                else {
+                    if let data = response.data {
+                        DispatchQueue(label: "", qos: .userInitiated).async {
+                            do {
+                                let out = try JSONDecoder().decode(OffStreetParkingOptionsResponse.self, from: data)
+                               
+                                let parkingAreas = unwrapOffStreetParkingAreaResponse(apiResponse: out)
+                                // handle result
+                                completionHandler(parkingAreas,nil)
+                                
+                            }
+                            catch let jsonErr {
+                                //print(response.debugDescription)
+                                completionHandler(nil, jsonErr)
+                            }
                         }
                     }
                 }
@@ -266,6 +277,48 @@ class BliqAPI {
                 print(error)
             }
         }
+    }
+    
+    // Error Handling
+    func handleError(response: DataResponse<Any>) -> BliqError {
+        let statusCode = response.response!.statusCode
+        let error = convertStatusCode(statusCode: statusCode)
+        print("Request failed, status code: \(statusCode), \(self.getStatusCodeDescription(bliqError: error))")
+        return error
+    }
+    
+    private func convertStatusCode(statusCode: Int) -> BliqError {
+        switch statusCode {
+        case 400: return .badRequest
+        case 401: return .unauthorized
+        case 402: return .wrongPlan
+        case 403: return .noPermissionForEndpoint
+        case 404: return .noDataFound
+        case 416: return .requestedLocationUnsupported
+        case 429: return .rateLimitExceeded
+        case 500: return .internalServerError
+        case 501: return .requestTypeUnsupported
+        case 504: return .timeout
+        default: return .unknown
+        }
+    }
+    
+    private func getStatusCodeDescription(bliqError: BliqError) -> String {
+        switch bliqError {
+        case .badRequest: return"Bad request (see debug messages for detailed error)"
+        case .unauthorized: return"Unauthorized (please check that header field ‘apikey’ is set)"
+        case .wrongPlan: return"Your current plan does not allow this type of request. Please upgrade your plan within Bliq Studio Account Management (https://studio.bliq.ai/personal-account-management) or adjust your request!"
+        case .noPermissionForEndpoint: return"Your apikey has no permission to access this endpoint. Please send an email to our support team"
+        case .noDataFound: return"No Parking Entities found for given request boundaries and filters (may remove filters and try again)!"
+        case .requestedLocationUnsupported: return"The requested location is currently not supported as AIPARK service area!"
+        case .rateLimitExceeded: return"Too many requests. API rate limit exceeded"
+        case .internalServerError: return"Internal Server Error, please send an email to our support team"
+        case .requestTypeUnsupported: return"Request type is not supported, please choose a different request type"
+        case .timeout: return"Timeout, please try sending request again"
+        default:
+            return "Unknown error"
+        }
+        
     }
     
     // Feedback APIs
@@ -337,12 +390,11 @@ class BliqAPI {
                         
                         upload.responseJSON { response in
                             if response.response?.statusCode != 200 {
-                                print(response.value.debugDescription)
+                                completionHandler(nil,self.handleError(response: response))
                             }
-                            completionHandler(response.response?.statusCode,nil)
-//                            print("the resopnse code is : \(response.response?.statusCode)")
-//                            print("the response is : \(response)")
-//                            print("the request is: \(response.debugDescription)")
+                            else {
+                                completionHandler(response.response?.statusCode,nil)
+                            }
                         }
                         break
                     case .failure(let encodingError):
@@ -375,13 +427,14 @@ class BliqAPI {
             switch response.result {
             case .success:
                 if response.response?.statusCode != 200 {
-                    print(response.value.debugDescription)
+                    completionHandler(nil,self.handleError(response: response))
                 }
-                completionHandler(response.response?.statusCode,nil)
+                else {
+                    completionHandler(response.response?.statusCode,nil)
+                }
             case .failure(let error):
                 completionHandler(nil, error)
                 print(response.value.debugDescription)
-                print(error)
             }
         }
         
@@ -468,13 +521,13 @@ extension BliqAPI {
             case .success(_):
                 let answer = response.result.value! as! Int
                 if response.response?.statusCode != 200 {
-                    print(response.value.debugDescription)
+                    completionHandler(nil,self.handleError(response: response))
                 }
-                completionHandler(String(answer) ,nil)
+                else {
+                    completionHandler(String(answer) ,nil)
+                }
             case .failure(let error):
-                print("Statuscode: \(String(describing: response.response?.statusCode))")
-                print(error)
-                completionHandler(nil, error)
+                completionHandler(nil,error)
             }
         }
     }
@@ -506,4 +559,5 @@ extension BliqAPI {
         }
     }
 }
+
 
