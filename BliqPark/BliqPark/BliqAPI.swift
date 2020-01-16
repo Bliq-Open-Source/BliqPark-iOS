@@ -310,7 +310,7 @@ class BliqAPI {
         case .wrongPlan: return"Your current plan does not allow this type of request. Please upgrade your plan within Bliq Studio Account Management (https://studio.bliq.ai/personal-account-management) or adjust your request!"
         case .noPermissionForEndpoint: return"Your apikey has no permission to access this endpoint. Please send an email to our support team"
         case .noDataFound: return"No Parking Entities found for given request boundaries and filters (may remove filters and try again)!"
-        case .requestedLocationUnsupported: return"The requested location is currently not supported as AIPARK service area!"
+        case .requestedLocationUnsupported: return"The requested location is currently not supported as BliqPark service area!"
         case .rateLimitExceeded: return"Too many requests. API rate limit exceeded"
         case .internalServerError: return"Internal Server Error, please send an email to our support team"
         case .requestTypeUnsupported: return"Request type is not supported, please choose a different request type"
