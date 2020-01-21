@@ -85,6 +85,7 @@ public struct ParkingEntity: Codable {
     public let centerPoint: CenterPoint
     public let occupancy : Occupancy?
     public let openingHours: OpeningHours?
+    public let residential: [ResidentialSchedule]?
     public let maxStay: [MaxStaySchedule]?
     public let priceInformation: PriceInformation?
     public let orientation : String?
@@ -145,6 +146,11 @@ public struct TimestampDescription: Codable {
     
 }
 
+public struct ResidentialSchedule: Codable {
+    public let capacityResidential: Int
+    public let schedule: ScheduleKey
+}
+
 public struct OpeningHours: Codable {
     public let simpleOpeningStatus: String?
     public let schedules: [OpeningHourSchedule]?
@@ -173,6 +179,7 @@ public struct ScheduleKey: Codable {
     public let description: String?
     public let priority: Int?
 }
+
 
 
 

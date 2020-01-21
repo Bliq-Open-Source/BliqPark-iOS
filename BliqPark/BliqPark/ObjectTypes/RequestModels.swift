@@ -405,6 +405,7 @@ public enum IncludeTags: String, Codable {
     case paid = "PAID"
     case free = "FREE"
     case _private = "PRIVATE"
+    case private_residential = "PRIVATE_RESIDENTIAL"
     case customer = "CUSTOMER"
     case parkAndRide = "PARK_AND_RIDE"
 }
@@ -473,4 +474,5 @@ public enum CurrencyCode: String, Codable {
     case nzd = "NZD"
     case brl = "BRL"
 }
+
 

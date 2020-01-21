@@ -1,6 +1,6 @@
 //
 //  OnStreetParkingOptions.swift
-//  
+//
 //
 //  Created by Julian Glaab on 16.11.19.
 //
@@ -23,6 +23,7 @@ public class ParkingArea {
     public var orientation: String?
     public var centerPoint: CLLocationCoordinate2D?
     public var priceInformation: PriceInformation?
+    public var residential: [ResidentialSchedule]?
     public var parkingTags: [String]?
     public var openingHours : OpeningHours?
     public var occupancy: Occupancy?
@@ -42,6 +43,7 @@ public class ParkingArea {
         self.capacity = raw.properties.parkingEntity?.capacity
         self.parkingTags = raw.properties.parkingEntity?.parkingTags
         self.priceInformation = raw.properties.parkingEntity?.priceInformation
+        self.residential = raw.properties.parkingEntity?.residential
         self.streetName = raw.properties.parkingEntity?.streetName
         self.parkingEntityName = raw.properties.parkingEntity?.parkingEntityName
         
@@ -146,3 +148,4 @@ public enum ShapeType {
     case MultiPolygon
     case Unknown
 }
+
