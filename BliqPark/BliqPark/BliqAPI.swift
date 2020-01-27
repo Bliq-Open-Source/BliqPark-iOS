@@ -95,7 +95,7 @@ public class BliqPark {
     
 }
 
-enum BliqError: Error {
+public enum BliqError: Error {
     case badRequest
     case unauthorized
     case wrongPlan
